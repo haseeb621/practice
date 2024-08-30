@@ -1,0 +1,4 @@
+{% autoescape off %}
+Welcome to Haseeb's project,Confirm your email to activate your account.
+Confirmation Link: http://{{domain}}{%url 'Account:activate' uidb64=uid token=token %}
+{% endautoescape %}

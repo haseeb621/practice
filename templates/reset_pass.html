@@ -1,0 +1,185 @@
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .navbar-list li {
+            margin: 0 15px;
+        }
+
+        .navbar-list a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-list a:hover {
+            color: #18bc9c;
+        }
+
+        .container {
+            width: 60%;
+            margin: 80px auto 20px auto; /* Adjusted for fixed navbar */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-button {
+            background-color: #18bc9c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #16a085;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li><a href="{% url 'Account:success_login' %}">Home</a></li>
+            <li><a href="{% url 'Bank:add' %}">Add Bank</a></li>
+            <li><a href="{% url 'Account:profile2' %}">Profile</a></li>
+            <li><a href="{% url 'Account:Logout' %}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Reset Password</h2>
+        
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form action="{% url 'Account:reset_pass' %}" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="uname">Username:</label>
+                <input type="text" id="uname" name="uname" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="pass1">New Password:</label>
+                <input type="password" id="pass1" name="pass1" required>
+            </div>
+            
+            <button type="submit" class="submit-button">Reset Password</button>
+        </form>
+    </div>
+</body>
+
+</html>
+{% else %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 60%;
+            margin: 80px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Access Denied</h2>
+        <p>You need to be logged in to access this page.</p>
+    </div>
+</body>
+
+</html>
+{% endif %}

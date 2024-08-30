@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+        .navbar-list li {
+            margin: 0 20px;
+        }
+        .navbar-list a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .navbar-list a:hover {
+            color: #18bc9c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            border-left: 4px solid #18bc9c;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        p {
+            line-height: 1.6;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li><a href="{% url 'Bank:index' %}">Home</a></li>
+            <li><a href="{% url 'Bank:about' %}">About</a></li>
+            <li><a href="{% url 'Bank:Accounts' %}">Accounts</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>About Us</h2>
+        <p>Welcome to <strong>[Bank Management]</strong>, your comprehensive resource for information about various banks and their branches. Our platform is designed to provide you with detailed insights into banking institutions and their services, making it easier for you to find the financial services that best meet your needs.</p>
+
+        <h3>What We Offer:</h3>
+        <ul>
+            <li><strong>Bank Information:</strong> Explore detailed profiles of different banks, including their key services, institution numbers, SWIFT codes, and more.</li>
+            <li><strong>Branch Details:</strong> Get specific information about individual branches, including their location, contact information, and capacity.</li>
+            <li><strong>User Contributions:</strong> If you’re logged in, you can actively contribute to our growing database by adding new banks or branches. This helps ensure our information is as up-to-date and comprehensive as possible.</li>
+            <li><strong>Easy Navigation:</strong> Our user-friendly interface allows you to quickly find the information you’re looking for. Whether you're searching for a bank's main office or trying to locate a nearby branch, we’ve got you covered.</li>
+            <li><strong>Secure and Reliable:</strong> We prioritize the security of your data and ensure that all information is accurate and verified.</li>
+        </ul>
+
+        <h3>Why Choose Us?</h3>
+        <p>In today’s fast-paced world, having quick access to reliable banking information is crucial. Whether you're a business owner, a financial professional, or just someone looking to manage your personal finances, our platform is here to assist you.</p>
+        <p>Join us in building a community-driven resource where everyone can contribute and benefit from shared knowledge about banks and branches across the country.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 [Bank Management]. All rights reserved.</p>
+    </div>
+</body>
+</html>

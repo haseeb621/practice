@@ -1,0 +1,341 @@
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Information</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .navbar-list li {
+            margin: 0 15px;
+        }
+
+        .navbar-list a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-list a:hover {
+            color: #18bc9c;
+        }
+
+        .container {
+            width: 80%;
+            margin: 80px auto 20px auto; /* Adjusted for fixed navbar */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .bank-info {
+            margin-bottom: 20px;
+        }
+
+        .bank-info h2 {
+            margin: 0 0 10px;
+        }
+
+        .bank-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .edit-button {
+            background-color: #18bc9c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .edit-button:hover {
+            background-color: #16a085;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li><a href="{% url 'Account:success_login' %}">Home</a></li>
+            <li><a href="{% url 'Bank:add' %}">Add Bank</a></li>
+            <li><a href="{% url 'Account:profile2' %}">Profile</a></li>
+            <li><a href="{% url 'Account:Logout' %}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="bank-info">
+            <h2>Bank Information</h2>
+            <p><strong>Name:</strong> {{ bank.name }}</p>
+            <p><strong>Institution Number:</strong> {{ bank.inst_num }}</p>
+            <p><strong>Swift Code:</strong> {{ bank.swift_code }}</p>
+            <p><strong>Owner:</strong> {{ bank.owner }}</p>
+        </div>
+
+        <h3>Branches</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Transit Number</th>
+                    <th>Email</th>
+                    <th>Capacity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for branch in branches %}
+                <tr>
+                    <td>{{ branch.name }}</td>
+                    <td>{{ branch.transit_num }}</td>
+                    <td>{{ branch.email }}</td>
+                    <td>{{ branch.capacity }}</td>
+                    <td>
+                        <a href="{% url 'Bank:branch_edit' branch.id %}" class="edit-button">Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No branches available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+{% else %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .navbar-list li {
+            margin: 0 20px;
+        }
+
+        .navbar-list a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-list a:hover {
+            color: #18bc9c;
+        }
+
+        .container {
+            width: 80%;
+            margin: 100px auto 20px auto; /* Adjusted for fixed navbar */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            border-left: 4px solid #18bc9c;
+        }
+
+        .bank-info {
+            margin-bottom: 20px;
+        }
+
+        .bank-info h2 {
+            margin: 0 0 10px;
+            color: #2c3e50;
+        }
+
+        .bank-info p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        th {
+            background-color: #18bc9c;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .details-btn {
+            background-color: #18bc9c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .details-btn:hover {
+            background-color: #16a085;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li><a href="{% url 'Bank:index' %}">Home</a></li>
+            <li><a href="{% url 'Bank:about' %}">About</a></li>
+            <li><a href="{% url 'Bank:Accounts' %}">Accounts</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="bank-info">
+            <h2>Bank Information</h2>
+            <p><strong>Name:</strong> {{ bank.name }}</p>
+            <p><strong>Institution Number:</strong> {{ bank.inst_num }}</p>
+            <p><strong>Swift Code:</strong> {{ bank.swift_code }}</p>
+            <p><strong>Owner:</strong> {{ bank.owner }}</p>
+        </div>
+
+        <h3>Branches</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Transit Number</th>
+                    <th>Email</th>
+                    <th>Capacity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for branch in branches %}
+                <tr>
+                    <td>{{ branch.name }}</td>
+                    <td>{{ branch.transit_num }}</td>
+                    <td>{{ branch.email }}</td>
+                    <td>{{ branch.capacity }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No branches available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+
+{% endif %}
