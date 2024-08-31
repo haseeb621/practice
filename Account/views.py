@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.urls import reverse_lazy
 import Bank
 from django.core.validators import EmailValidator
 from Bank.models import Bank
@@ -13,9 +14,16 @@ from django.utils.encoding import force_bytes,force_str
 from django.template.loader import render_to_string
 from practice import settings
 from django.core.mail import send_mail
-# Create your views here.
+from django.views.decorators.http import require_POST
+from django.contrib.auth.views import (
+    PasswordResetView, PasswordResetDoneView, 
+    PasswordResetConfirmView, PasswordResetCompleteView
+)
+
+def render_register(request):
+  return render(request,'register.html')
+@require_POST
 def register(request):
- if request.method=='POST':
   fname=request.POST['fname']
   lname=request.POST['lname']
   uname=request.POST['uname']
@@ -68,11 +76,11 @@ def register(request):
    send_mail(subject,message,from_mail,to_list,fail_silently=True)
    messages.info(request,'A Varification email was sent successfully')
    myuser.save()
-   return redirect('Account:Login')
-
- return render(request,'register.html')
+   return redirect('Account:render_Login')
+def render_Login(request):
+  return render(request,'login.html')
+@require_POST
 def Login(request):
- if request.method=='POST':
   uname=request.POST['uname']
   pass1=request.POST['pass1']
   user=authenticate(username=uname,password=pass1)
@@ -93,8 +101,7 @@ def Login(request):
    return render(request,'login.html')
   else:
     messages.error(request,'Username or passwword incorrect')
-    return redirect('Account:Login')
- return render(request,'login.html')
+    return redirect('Account:render_Login')
 def success_login(request):
   banks = Bank.objects.filter(owner=request.user)
   return render(request, 'success_login.html', {'banks': banks})
@@ -107,8 +114,11 @@ def profile(request):
          "pk":user.pk,
          }
  return JsonResponse(userData)
+
+def render_edit_profile(request):
+  return render(request,'edit_profile.html')  
+@require_POST
 def edit_profile(request):
-  if request.method=='POST':
    email=request.POST['email']
    fname=request.POST['fname']
    lname=request.POST['lname']
@@ -122,39 +132,36 @@ def edit_profile(request):
    user.save()
    
    messages.success(request,'Your profile was edited successfully')
-   return redirect('Account:profile2')
-  return render(request,'edit_profile.html')  
+   return redirect('Account:profile2') 
 def profile2(request):
   return render(request,'profile.html')
 def Logout(request):
   logout(request)
   banks=Bank.objects.all()
   return render(request,'index.html',{'banks':banks})
-def reset_pass(request):
-  if request.method == 'POST':
+def render_forget_pass(request):
+  return render(request, 'forget_pass.html')
+@require_POST
+def forget_pass(request):
      user=request.user
      uname = request.POST['uname']
      pass1 = request.POST['pass1']
      if len(str(pass1))< 8:
        messages.error(request,'Paswword must be 8 characters')
-       return redirect('Account:reset_pass')
+       return redirect('Account:forget_pass')
      elif user.username!=uname:
        messages.error(request,'Invalid Username')
-       return render(request,'reset_pass.html')
+       return render(request,'forget_pass.html')
      else:
       try:
         user = User.objects.get(username=uname)
         user.set_password(pass1)
         user.save()
         messages.success(request, 'Password successfully changed')
-        return redirect('Account:Login')  # Redirect to a success page or profile page
+        return redirect('Account:render_Login')  # Redirect to a success page or profile page
       except User.DoesNotExist:
               messages.error(request, 'Wrong username.')
               return render(request, 'reset_pass.html')
-  else:
-     return render(request, 'reset_pass.html')
-def password_reset_complete(request):
-  return render(request,'password_reset_complete.html')
 def activate(request,uidb64,token):
   try:
     uid=urlsafe_base64_decode(force_str(uidb64))
@@ -165,7 +172,7 @@ def activate(request,uidb64,token):
   if user is not None and default_token_generator.check_token(user,token):
     user.is_active=True
     user.save()
-    return redirect('Account:Login')
+    return redirect('Account:render_Login')
 def login_activate(request,uidb64,token):
  try:
   uid=urlsafe_base64_decode(force_str(uidb64))
@@ -177,4 +184,23 @@ def login_activate(request,uidb64,token):
   login(request,user)
   return redirect('Account:success_login')
  else:
-  return render(request,'activation_failed.html')
+  return render(request,'activation_failed.html') 
+def password_reset(request):
+    return PasswordResetView.as_view(
+        template_name='reset/password_reset_form.html',
+        email_template_name='reset/password_reset_email.html', 
+        success_url=reverse_lazy('Account:password_reset_done')
+    )(request)
+def password_reset_done(request):
+    return PasswordResetDoneView.as_view(
+        template_name='reset/password_reset_done.html'
+    )(request)
+def password_reset_confirm(request, uidb64, token):
+    return PasswordResetConfirmView.as_view(
+        template_name='reset/password_reset_confirm.html',
+        success_url=reverse_lazy('Account:password_reset_complete')
+    )(request, uidb64=uidb64, token=token)
+def password_reset_complete(request):
+    return PasswordResetCompleteView.as_view(
+        template_name='reset/password_reset_complete.html'
+)(request)

@@ -123,7 +123,7 @@
             </div>
         {% endif %}
         
-        <form action="{% url 'Account:reset_pass' %}" method="POST">
+        <form action="{% url 'Account:forget_pass' %}" method="POST">
             {% csrf_token %}
             
             <div class="form-group">
@@ -136,7 +136,7 @@
                 <input type="password" id="pass1" name="pass1" required>
             </div>
             
-            <button type="submit" class="submit-button">Reset Password</button>
+            <button type="submit" class="submit-button">Forget Password</button>
         </form>
     </div>
 </body>

@@ -113,7 +113,7 @@
 
     <div class="container">
         <h2>Edit Profile</h2>
-        <form method="post">
+        <form method="post" action="{% url 'Account:edit_profile'%}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="uname">User Name:</label>
