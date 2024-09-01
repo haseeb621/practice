@@ -15,10 +15,8 @@ from django.template.loader import render_to_string
 from practice import settings
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
-from django.contrib.auth.views import (
-    PasswordResetView, PasswordResetDoneView, 
-    PasswordResetConfirmView, PasswordResetCompleteView
-)
+from django.contrib.auth.views import PasswordResetCompleteView,PasswordResetConfirmView,PasswordResetDoneView,PasswordResetView
+
 
 def render_register(request):
   return render(request,'register.html')
@@ -139,10 +137,10 @@ def Logout(request):
   logout(request)
   banks=Bank.objects.all()
   return render(request,'index.html',{'banks':banks})
-def render_forget_pass(request):
-  return render(request, 'forget_pass.html')
+def render_change_pass(request):
+  return render(request, 'change_pass.html')
 @require_POST
-def forget_pass(request):
+def change_pass(request):
      user=request.user
      uname = request.POST['uname']
      pass1 = request.POST['pass1']
@@ -151,7 +149,7 @@ def forget_pass(request):
        return redirect('Account:forget_pass')
      elif user.username!=uname:
        messages.error(request,'Invalid Username')
-       return render(request,'forget_pass.html')
+       return render(request,'change_pass.html')
      else:
       try:
         user = User.objects.get(username=uname)
@@ -161,7 +159,7 @@ def forget_pass(request):
         return redirect('Account:render_Login')  # Redirect to a success page or profile page
       except User.DoesNotExist:
               messages.error(request, 'Wrong username.')
-              return render(request, 'reset_pass.html')
+              return render(request, 'change_pass.html')
 def activate(request,uidb64,token):
   try:
     uid=urlsafe_base64_decode(force_str(uidb64))
