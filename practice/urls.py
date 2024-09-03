@@ -12,3 +12,7 @@ urlpatterns = [
     
    
 ]
+admin.site.site_header="BANK MANAGMENT"
+admin.site.site_title="Bank info"
+admin.site.site_url="BANK"
+admin.site.index_title="editor"
