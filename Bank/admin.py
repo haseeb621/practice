@@ -7,7 +7,7 @@ class MyBank(admin.ModelAdmin):
 admin.site.register(Bank,MyBank)
 
 class MyBranch(admin.ModelAdmin):
-   list_display=['name','transit_num','email','Bank_id']
+   list_display=['name','transit_num','email','Bank_id','capacity']
    search_fields=['name']
 admin.site.register(Branch,MyBranch)
 

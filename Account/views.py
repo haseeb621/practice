@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.dispatch import receiver
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
@@ -16,6 +17,7 @@ from practice import settings
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.contrib.auth.views import PasswordResetCompleteView,PasswordResetConfirmView,PasswordResetDoneView,PasswordResetView
+from django.db.models.signals import post_save
 
 
 def render_register(request):
@@ -75,6 +77,7 @@ def register(request):
    messages.info(request,'A Varification email was sent successfully')
    myuser.save()
    return redirect('Account:render_Login')
+
 def render_Login(request):
   return render(request,'login.html')
 @require_POST
@@ -202,3 +205,6 @@ def password_reset_complete(request):
     return PasswordResetCompleteView.as_view(
         template_name='reset/password_reset_complete.html'
 )(request)
+@receiver(post_save, sender=User)
+def saved(sender,*args, **kwargs):
+  print("user profile saved")

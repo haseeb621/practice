@@ -47,7 +47,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Account.meddelware.main.WhoMiddleware',
+    # 'Account.meddelware.main.popupForRegister',
+     'django.middleware.gzip.GZipMiddleware',
+
 ]
+
 
 ROOT_URLCONF = 'practice.urls'
 

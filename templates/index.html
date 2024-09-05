@@ -75,6 +75,39 @@
         .details-btn:hover {
             background-color: #16a085;
         }
+        /* Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px; /* Distance from the right edge of the viewport */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px; /* Optional: Set a width for consistency */
+}
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.popup-close {
+    background: #18bc9c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
     </style>
 </head>
 <body>
@@ -99,6 +132,44 @@
             <p>No bank information available.</p>
         {% endfor %}
     </div>
+
+    <!-- Popup Structure -->
+    <div class="popup-overlay" id="popup-overlay"></div>
+    <div class="popup" id="popup">
+        <button class="popup-close" id="popup-close">Close</button>
+        <h2>Welcome to Our Site!</h2>
+        <p>You need to log in to access all features.</p>
+        <a href= "{% url 'Account:render_Login'%}">Login in here</a>
+        <!-- Add registration form or additional information here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if the user is not authenticated
+            const isAuthenticated = "{{ user.is_authenticated }}";
+            
+            if (isAuthenticated === "False") {
+                // Show the popup and overlay
+                const popup = document.getElementById('popup');
+                const overlay = document.getElementById('popup-overlay');
+                const closeButton = document.getElementById('popup-close');
+
+                popup.style.display = 'block';
+                overlay.style.display = 'block';
+
+                // Close popup functionality
+                closeButton.addEventListener('click', function() {
+                    popup.style.display = 'none';
+                    overlay.style.display = 'none';
+                });
+
+                // Close popup if clicking outside of the popup
+                overlay.addEventListener('click', function() {
+                    popup.style.display = 'none';
+                    overlay.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-
