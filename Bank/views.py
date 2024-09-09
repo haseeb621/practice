@@ -73,3 +73,5 @@ def branch_edit(request, id):
         return render(request,'branch_edit.html',{'id':id})
     
     return render(request, 'branch_edit.html', {'branch': branch,'id':id})
+def prac(request):
+    return render(request,"prac.html")

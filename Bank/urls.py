@@ -12,5 +12,6 @@ urlpatterns = [
     path('add_branch/<int:id>',views.add_branch,name='add_branch'),
     path('branch_view/<int:id>',views.branch_view,name='branch_view'),
     path('branch_edit/<int:id>',views.branch_edit,name='branch_edit'),
+    path('prac', views.prac, name='prac'),
 ]
 
